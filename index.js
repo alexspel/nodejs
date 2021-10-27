@@ -1,3 +1,3 @@
-var printPrimeNumbers = require("./src/nodejs_task1");
+var printPrimeNumbers = require("./src/task1");
 
 printPrimeNumbers(process.argv[2], process.argv[3]);
