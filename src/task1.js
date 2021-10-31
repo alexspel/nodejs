@@ -15,13 +15,13 @@ function getPrimeNumbers(from, to) {
       result.push(n);
     }
   }
-  return result.length > 0 ? result : false;
+  return result;
 }
 
 function printPrimeNumbers(from, to) {
   if (!isNaN(from) && !isNaN(to)) {
     var primeNumbers = getPrimeNumbers(from, to);
-    if (primeNumbers) {
+    if (primeNumbers.length > 0) {
       primeNumbers.forEach((numb, index) => {
         var color = colors.red;
         if (index % 3 === 0) {
