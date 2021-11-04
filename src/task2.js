@@ -12,18 +12,13 @@ class DateUtils {
         t.setSeconds(seconds);
         return t;
     }
-
-    static dateToSeconds(date) {
-        var d = (typeof date) === "string" ? new Date(date) : date;
-        return d.getTime() / 1000;
-    }
-
-    static dateToSeconds(y, m, d, h, mm) {
+ 
+    static dateToSeconds(y, m, d, h = 0, mm = 0) { 
         return new Date(y, m, d, h, mm).getTime() / 1000;
     }
 
     static countdown(destinationTime, d) {
-        setTimeout(() => {
+        return setTimeout(() => {
             var currentTime = Math.floor(new Date().getTime() / 1000);
             var timeLeft = destinationTime - currentTime;
             var destinationDate = DateUtils.secondsToDate(destinationTime);
