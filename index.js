@@ -1,61 +1,30 @@
-// var printPrimeNumbers = require("./src/task1");
-// var { DateUtils, run } = require("./src/task2");
-// // printPrimeNumbers(process.argv[2], process.argv[3]);
- 
-// if (process.argv.length > 2) {
-//     var timers = [];
-//     for (var i = 2; i < process.argv.length; i++) {
-//         var date = new Date(process.argv[i]);
-//         if (date == "Invalid Date") {
-//             continue;
-//         }
-//         timersStarted = true;
-//         timers.push(
-//             DateUtils.countdown(
-//                 DateUtils.dateToSeconds(
-//                     date.getFullYear(),
-//                     date.getMonth(),
-//                     date.getDate(),
-//                     date.getHours()
-//                 ), 1000
-//             )
-//         );
-//     }
-//     if (timers.length > 0) {
-//         run();
-//     } else {
-//         console.log("no timers started");
-//     }
-// } 
+const app = require("./src/task6.js");
+const io = require("socket.io");
 
+const socketServer = io(app);
+const users = [];
 
-var task3 = require("./src/task3");
+socketServer.on("connection", (socket) => {
+    console.log("new connection");
+    users.push(socket.id);
+    socket.emit("setId", { userId: socket.id });
+    socketServer.emit("message", {
+        msg: `${socket.id} connected`,
+        totalUsers: users.length,
+    });
+    socket.on("message", function (data) {
+        console.log("message", JSON.stringify(data));
+        socketServer.emit("message", {
+            msg: `${socket.id}: ${data.msg}`,
+            totalUsers: users.length,
+        });
+    });
+    socket.on("disconnect", function () {
+        users.splice(users.indexOf(socket.id), 1);
+        socket.broadcast.emit("message", { msg: `${socket.id} disconnected` });
+    });
+});
 
-
-task3("./access.log", ["89\.123\.1\.41", "34\.48\.240\.111"]);
-=======
-if (process.argv.length > 2) {
-    var timers = [];
-    for (var i = 2; i < process.argv.length; i++) {
-        var date = new Date(process.argv[i]);
-        if (date == "Invalid Date") {
-            continue;
-        }
-        timersStarted = true;
-        timers.push(
-            DateUtils.countdown(
-                DateUtils.dateToSeconds(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate(),
-                    date.getHours()
-                ), 1000
-            )
-        );
-    }
-    if (timers.length > 0) {
-        run();
-    } else {
-        console.log("no timers started");
-    }
-} 
+app.listen(80, () => {
+    console.log("Server started on port 3030");
+});

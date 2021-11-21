@@ -1,0 +1,81 @@
+<html>
+    <script
+        src="https://cdn.socket.io/3.1.1/socket.io.min.js"
+        integrity="sha384-gDaozqUvc4HTgo8iZjwth73C6dDDeOJsAgpxBcMpZYztUfjHXpzrpdrHRdVp8ySO"
+        crossorigin="anonymous"
+    ></script>
+
+    <head>
+        <title>Socket App</title>
+    </head>
+    <style type="text/css">
+        body {
+            font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+                sans-serif;
+        }
+        .message {
+            border: 1px solid rgb(0, 204, 255);
+            border-radius: 5px;
+            padding: 15px 10px;
+            margin: 5px 0;
+        }
+        #userId,
+        #totalUsers {
+            border: none;
+        }
+    </style>
+    <body>
+        <div class="chat">
+            <div>
+                User ID: <input id="userId" type="text" value="" readonly />
+            </div>
+            <div>
+                Total users:
+                <input id="totalUsers" type="text" value="" readonly />
+            </div>
+            <div>
+                <input id="message" type="text" value="" /><button
+                    id="sendButton"
+                >
+                    send
+                </button>
+            </div>
+            <div id="messages">
+                <div class="message">2</div>
+                <div class="message">3</div>
+                <div class="message">1</div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        window.onload = function () {
+            const socket = io();
+            const addMessage = (msg) => {
+                const msgTag = document.createElement("div");
+                msgTag.innerText = msg;
+                msgTag.classList.add("message");
+                document.getElementById("messages").append(msgTag);
+            };
+            socket.on("connect", function () {
+                console.log("connected to server");
+            });
+            socket.on("setId", function (data) {
+                document.getElementById("userId").value = data.userId;
+            });
+            socket.on("message", function (data) {
+                console.log(data);
+                addMessage(data.msg);
+                document.getElementById("totalUsers").value = data.totalUsers;
+            });
+            socket.on("setId", function (data) {
+                document.getElementById("userId", data.userId);
+            });
+            document.getElementById("sendButton").onclick = function () {
+                socket.emit("message", {
+                    msg: document.getElementById("message").value,
+                });
+                document.getElementById("message").value = "";
+            };
+        };
+    </script>
+</html>
