@@ -1,61 +1,24 @@
-// var printPrimeNumbers = require("./src/task1");
-// var { DateUtils, run } = require("./src/task2");
-// // printPrimeNumbers(process.argv[2], process.argv[3]);
- 
-// if (process.argv.length > 2) {
-//     var timers = [];
-//     for (var i = 2; i < process.argv.length; i++) {
-//         var date = new Date(process.argv[i]);
-//         if (date == "Invalid Date") {
-//             continue;
-//         }
-//         timersStarted = true;
-//         timers.push(
-//             DateUtils.countdown(
-//                 DateUtils.dateToSeconds(
-//                     date.getFullYear(),
-//                     date.getMonth(),
-//                     date.getDate(),
-//                     date.getHours()
-//                 ), 1000
-//             )
-//         );
-//     }
-//     if (timers.length > 0) {
-//         run();
-//     } else {
-//         console.log("no timers started");
-//     }
-// } 
+const yargs = require("yargs");
+const path = require("path");
 
+const browse = require("./src/task4");
 
-var task3 = require("./src/task3");
+const options = yargs
+    .usage("Usage: -p path")
+    .option("p", {
+        alias: "path",
+        describe: "starting path",
+        type: "string",
+        default: process.cwd(),
+        demandOption: true,
+    })
+    .option("s", {
+        alias: "str",
+        describe: "string to find",
+        type: "string",
+        default: null,
+        demandOption: true,
+    }).argv;
 
-
-task3("./access.log", ["89\.123\.1\.41", "34\.48\.240\.111"]);
-=======
-if (process.argv.length > 2) {
-    var timers = [];
-    for (var i = 2; i < process.argv.length; i++) {
-        var date = new Date(process.argv[i]);
-        if (date == "Invalid Date") {
-            continue;
-        }
-        timersStarted = true;
-        timers.push(
-            DateUtils.countdown(
-                DateUtils.dateToSeconds(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate(),
-                    date.getHours()
-                ), 1000
-            )
-        );
-    }
-    if (timers.length > 0) {
-        run();
-    } else {
-        console.log("no timers started");
-    }
-} 
+console.log(options);
+browse(options.path, options.str);
