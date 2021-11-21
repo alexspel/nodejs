@@ -1,24 +1,7 @@
-const yargs = require("yargs");
-const path = require("path");
+const { server } = require("./src/task5");
+const port = 80;
+const host = "194.67.78.19";
 
-const browse = require("./src/task4");
+// browse(options.path, options.str);
 
-const options = yargs
-    .usage("Usage: -p path")
-    .option("p", {
-        alias: "path",
-        describe: "starting path",
-        type: "string",
-        default: process.cwd(),
-        demandOption: true,
-    })
-    .option("s", {
-        alias: "str",
-        describe: "string to find",
-        type: "string",
-        default: null,
-        demandOption: true,
-    }).argv;
-
-console.log(options);
-browse(options.path, options.str);
+server.listen(port, host);
